@@ -1,20 +1,30 @@
 <template>
-  <el-container>
-      <el-header><blog-header></blog-header></el-header>
-  </el-container>
+    <el-container>
+        <el-header class="header">
+            <blog-header></blog-header>
+        </el-header>
+        <el-main>
+            <router-view></router-view>
+        </el-main>
+    </el-container>
 </template>
 
 <script>
-
-import BlogHeader from '../components/blog-header.vue'
+import BlogHeader from "../components/blog-header.vue";
 
 export default {
-    components:{
-        BlogHeader
-    }
-}
+    components: {
+        BlogHeader,
+    },
+    // mounted(){
+    //     // 默认跳转
+    //     this.$router.push('/index/show')
+    // }
+};
 </script>
 
 <style>
-
+.header {
+    margin: 0 80px;
+}
 </style>
