@@ -3,7 +3,14 @@
         <el-col :span="10">
             <div class="icon">Easy Blog</div>
         </el-col>
-        <el-col :span="10" class="title">主页</el-col>
+        <el-col :span="10" class="title"
+            ><el-link href="/index" :underline="false">主页</el-link></el-col
+        >
+        <el-col :span="2" class="title"
+            ><el-link href="/index/editor" :underline="false"
+                >发布新文章</el-link
+            ></el-col
+        >
         <el-col :span="1" class="title">登录</el-col>
         <el-col :span="1" class="title">注册</el-col>
     </el-row>
@@ -29,7 +36,7 @@ export default {};
     font-size: 40px;
 }
 .title {
-    font-size: 18px;
+    font-size: 18px !important;
     line-height: 60px;
 }
 </style>
