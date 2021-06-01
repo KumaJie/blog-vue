@@ -20,11 +20,12 @@ const routes = [
         component: main
       },
       {
-        path:'editor',
+        path: 'editor',
         component: editor
       }
     ]
-  }
+  },
+  
 ]
 
 const router = new VueRouter({

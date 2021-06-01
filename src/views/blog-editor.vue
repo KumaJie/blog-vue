@@ -1,14 +1,7 @@
 <template>
     <div>
-        <textarea
-            name=""
-            id=""
-            cols="30"
-            rows="10"
-            :value="input"
-            @input="update"
-        ></textarea>
-        <div v-html="compiledMarkdown"></div>
+            <mavon-editor :value="value" @change="change"/>
+        <div  class="markdown-body" v-html="html"></div>
     </div>
 </template>
 
@@ -16,21 +9,16 @@
 export default {
     data() {
         return {
-            input: "# hello",
+            value: "# hello",
+            html: ''
         };
     },
-    computed: {
-        compiledMarkdown() {
-            return this.$marked(this.input)
-        },
-    },
     methods: {
-        update(e){
-            this.input = e.target.value
+        change(e, render){
+            console.log(render)
+            this.html = render
         }
     },
 };
 </script>
     
-<style>
-</style>

@@ -3,12 +3,15 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 import ElementUI from 'element-ui'
-import marked from 'marked'
 import 'element-ui/lib/theme-chalk/index.css';
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 import './assets/css/global.css'
-Vue.prototype.$axios = axios
-Vue.prototype.$marked = marked
+
+Vue.prototype.$http = axios
+
 Vue.use(ElementUI)
+Vue.use(mavonEditor)
 Vue.config.productionTip = false
 
 new Vue({
