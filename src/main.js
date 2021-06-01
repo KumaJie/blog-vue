@@ -3,10 +3,11 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 import ElementUI from 'element-ui'
+import marked from 'marked'
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/global.css'
 Vue.prototype.$axios = axios
-
+Vue.prototype.$marked = marked
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 

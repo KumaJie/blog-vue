@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import index from '../views/index.vue'
-import show from '../components/blog-show.vue'
+import main from '../components/blog-main.vue'
 
 Vue.use(VueRouter)
 
@@ -16,7 +16,7 @@ const routes = [
     children:[
       {
         path: '',
-        component: show
+        component: main
       }
     ]
   }
