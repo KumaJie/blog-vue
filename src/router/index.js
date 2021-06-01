@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import index from '../views/index.vue'
 import main from '../components/blog-main.vue'
+import editor from '../views/blog-editor.vue'
 
 Vue.use(VueRouter)
 
@@ -17,6 +18,10 @@ const routes = [
       {
         path: '',
         component: main
+      },
+      {
+        path:'editor',
+        component: editor
       }
     ]
   }

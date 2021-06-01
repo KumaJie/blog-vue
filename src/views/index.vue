@@ -16,10 +16,7 @@ export default {
     components: {
         BlogHeader,
     },
-    // mounted(){
-    //     // 默认跳转
-    //     this.$router.push('/index/show')
-    // }
+   
 };
 </script>
 
