@@ -90,7 +90,7 @@ export default {
     mounted() {
         this.$http({
             method: 'post',
-            url: 'article/findListByViews',
+            url: 'article/findListByView',
             changeOrigin: true,
         })
             .then((result) => {
