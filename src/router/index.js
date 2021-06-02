@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import index from '../views/index.vue'
 import main from '../components/blog-main.vue'
 import editor from '../views/blog-editor.vue'
-
+import detail from '../components/blog-detail.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,6 +22,9 @@ const routes = [
       {
         path: 'editor',
         component: editor
+      },{
+        path: 'detail/:articleId',
+        component: detail
       }
     ]
   },
