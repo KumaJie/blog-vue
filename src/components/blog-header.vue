@@ -1,5 +1,5 @@
 <template>
-    <el-row>
+    <el-row style="min-width:1314px">
         <el-col :span="10">
             <div class="icon">Easy Blog</div>
         </el-col>
@@ -11,8 +11,16 @@
                 >发布新文章</el-link
             ></el-col
         >
-        <el-col :span="1" class="title">登录</el-col>
-        <el-col :span="1" class="title">注册</el-col>
+        <el-col :span="1" class="title"
+            ><el-link href="/login" :underline="false"
+                >登录</el-link
+            ></el-col
+        >
+        <el-col :span="1" class="title"
+            ><el-link href="/register" :underline="false"
+                >注册</el-link
+            ></el-col
+        >
     </el-row>
 </template>
 
@@ -27,13 +35,14 @@ export default {};
     background-image: url("../assets/img/blog.png");
     background-size: 100% 100%;
     background-position: center center;
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
     margin-right: 15px;
-    vertical-align: -5px;
+    vertical-align: -4px;
 }
 .icon {
-    font-size: 40px;
+    font-size: 30px;
+    line-height: 60px;
 }
 .title {
     font-size: 18px !important;
