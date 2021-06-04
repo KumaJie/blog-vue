@@ -3,7 +3,7 @@
         <el-col :span="10">
             <div class="icon">Easy Blog</div>
         </el-col>
-        <el-col :span="10" class="title"
+        <el-col :span="9" class="title"
             ><el-link href="/index" :underline="false">主页</el-link></el-col
         >
         <el-col :span="2" class="title"
@@ -17,9 +17,46 @@
         <el-col :span="1" class="title" v-if="!ifLogin"
             ><el-link href="/register" :underline="false">注册</el-link></el-col
         >
-        <el-col :span="2" v-if="ifLogin">
-            <el-avatar :src="userImg" icon="el-icon-user-solid"></el-avatar>
-            <span>{{userName}}</span>
+        <el-col :span="3" v-if="ifLogin">
+            <div style="display: flex">
+                <!-- <el-menu mode="horizontal">
+                    <el-submenu index="1">
+                        <template slot="title"
+                            ><el-avatar
+                                :src="userImg"
+                                style="margin-right:10px"
+                            ></el-avatar>
+                            <span>{{userName}}</span>
+                        </template>
+                        <el-menu-item index="1-1">选项1</el-menu-item>
+                        <el-menu-item index="1-2">选项2</el-menu-item>
+                        <el-menu-item index="1-3">选项3</el-menu-item>
+                    </el-submenu>
+                </el-menu> -->
+                <el-avatar
+                    :src="userImg"
+                    style="margin-right: 10px; position: relative; top: 10px"
+                ></el-avatar>
+                <el-dropdown @command="command">
+                    <span style="line-height: 60px"
+                        >{{ userName }}
+                        <i class="el-icon-arrow-down el-icon--right"></i
+                    ></span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item icon="el-icon-user" command="info"
+                            >个人信息</el-dropdown-item
+                        >
+                        <el-dropdown-item icon="el-icon-reading" command="blog"
+                            >个人博客</el-dropdown-item
+                        >
+                        <el-dropdown-item
+                            icon="el-icon-close"
+                            command="loginOut"
+                            >退出登录</el-dropdown-item
+                        >
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </div>
         </el-col>
     </el-row>
 </template>
@@ -28,15 +65,42 @@
 export default {
     data() {
         return {
-            userImg:
-                "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-            userName: "",
+            userId: '',
+            userImg: '',
+            userName: '',
             ifLogin: false,
         };
     },
+    methods: {
+        command(com) {
+            switch (com) {
+                case "info":
+                    this.showInfo()
+                    break
+                case "blog":
+                    this.showBlog()
+                    break;
+                case "loginOut":
+                    this.loginOut()
+                    break;
+            }
+        },
+        showInfo() {
+
+        },
+        showBlog() {
+            this.$router.push("/index/myblog/"+this.userId)
+        },
+        loginOut() {
+            sessionStorage.removeItem('userInfo')
+            this.ifLogin = false
+            this.$router.replace('/')
+        },
+    },
     mounted() {
-        const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-        if (userInfo != "") {
+        const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+        if (userInfo) {
+            this.userId = userInfo.userId
             this.userImg = userInfo.userImg;
             this.userName = userInfo.userName;
             this.ifLogin = true;

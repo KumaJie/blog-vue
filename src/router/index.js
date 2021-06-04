@@ -20,6 +20,10 @@ const routes = [{
         component: main
       },
       {
+        path: 'myblog/:userId',
+        component: main
+      },
+      {
         path: 'editor',
         component: editor
       }, {

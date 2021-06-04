@@ -140,6 +140,7 @@ export default {
                                     { style: "color: teal" },
                                     "注册成功,即将返回首页"
                                 ),
+                                duration: 1000
                             });
                             setTimeout(() => {
                                 this.backIndex();

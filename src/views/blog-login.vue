@@ -95,6 +95,7 @@ export default {
                                         { style: "color: teal" },
                                         "检查账户或密码"
                                     ),
+                                    duration: 1000
                                 });
                             } else {
                                 this.$notify({
@@ -104,6 +105,7 @@ export default {
                                         { style: "color: teal" },
                                         "注册成功,即将返回首页"
                                     ),
+                                    duration: 1000
                                 });
                                 sessionStorage.setItem(
                                     "userInfo",

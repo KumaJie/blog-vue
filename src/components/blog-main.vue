@@ -3,7 +3,7 @@
         <li v-for="blog in blogs" :key="blog.articleDate">
             <el-link
                 class="blog-title"
-                :href="'index/detail/' + blog.articleId"
+                :href="'/index/detail/' + blog.articleId"
                 >{{ blog.articleTitle }}</el-link
             >
             <el-row class="blog-description">
@@ -86,19 +86,47 @@ export default {
             blogs: [],
         };
     },
-    method: {},
-    mounted() {
-        this.$http({
-            method: 'post',
-            url: 'article/findListByView',
-            changeOrigin: true,
-        })
-            .then((result) => {
-                this.blogs = result.data;
+    methods: {
+        getAllBlogs() {
+            this.$http({
+                method: "post",
+                url: "article/findListByView",
             })
-            .catch((err) => {
-                console.log(err);
-            });
+                .then((result) => {
+                    this.blogs = result.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        getBlogByUserId(id) {
+            this.$http({
+                method: "get",
+                url: "article/findListById",
+                params: {
+                    id,
+                },
+            })
+                .then((result) => {
+                    this.blogs = result.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+    },
+    watch: {
+        $route(to, from) {
+            console.log(to);
+            if (to.params.userId) {
+                this.getBlogByUserId(to.params.userId);
+            } else {
+                this.getAllBlogs();
+            }
+        },
+    },
+    mounted() {
+        this.getAllBlogs();
     },
 };
 </script>

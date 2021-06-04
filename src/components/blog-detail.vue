@@ -39,7 +39,7 @@ export default {
             });
         // 增加浏览数量
         this.$http({
-            method: "post",
+            method: "get",
             url: "article/updateView",
             params: {
                 articleId,
