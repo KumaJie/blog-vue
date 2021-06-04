@@ -1,5 +1,5 @@
 <template>
-    <el-row style="min-width:1314px">
+    <el-row style="min-width: 1314px">
         <el-col :span="10">
             <div class="icon">Easy Blog</div>
         </el-col>
@@ -11,21 +11,38 @@
                 >发布新文章</el-link
             ></el-col
         >
-        <el-col :span="1" class="title"
-            ><el-link href="/login" :underline="false"
-                >登录</el-link
-            ></el-col
+        <el-col :span="1" class="title" v-if="!ifLogin"
+            ><el-link href="/login" :underline="false">登录</el-link></el-col
         >
-        <el-col :span="1" class="title"
-            ><el-link href="/register" :underline="false"
-                >注册</el-link
-            ></el-col
+        <el-col :span="1" class="title" v-if="!ifLogin"
+            ><el-link href="/register" :underline="false">注册</el-link></el-col
         >
+        <el-col :span="2" v-if="ifLogin">
+            <el-avatar :src="userImg" icon="el-icon-user-solid"></el-avatar>
+            <span>{{userName}}</span>
+        </el-col>
     </el-row>
 </template>
 
 <script>
-export default {};
+export default {
+    data() {
+        return {
+            userImg:
+                "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+            userName: "",
+            ifLogin: false,
+        };
+    },
+    mounted() {
+        const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+        if (userInfo != "") {
+            this.userImg = userInfo.userImg;
+            this.userName = userInfo.userName;
+            this.ifLogin = true;
+        }
+    },
+};
 </script>
 
 <style>
