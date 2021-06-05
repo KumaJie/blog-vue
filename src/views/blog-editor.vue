@@ -35,7 +35,7 @@ export default {
         },
         submit() {
             console.log({ ...this.article });
-            const h = this.$createElement;
+            const h = this.$createElement
             this.load = true;
             this.$http({
                 method: "post",
@@ -53,7 +53,7 @@ export default {
                                 { style: "color: teal" },
                                 "您的博客已经成功上传"
                             ),
-                        });
+                        })
                     }, 3000);
                 })
                 .catch((err) => {
@@ -73,17 +73,21 @@ export default {
         },
     },
     mounted() {
-        const userInfo = JSON.parse(sessionStorage.getItem("userInfo"))
-        const h = this.$createElement
+        const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+        const h = this.$createElement;
         if (userInfo) {
-            this.article.userId = userInfo.userId
+            this.article.userId = userInfo.userId;
         } else {
             this.$notify({
                 title: "请先登录",
-                message: h("i", { style: "color: teal" }, "登录后才可使用编辑器"),
-                duration: 1500
+                message: h(
+                    "i",
+                    { style: "color: teal" },
+                    "登录后才可使用编辑器"
+                ),
+                duration: 1500,
             });
-            this.$router.push("/login")
+            this.$router.push("/login");
         }
     },
 };

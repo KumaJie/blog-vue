@@ -3,10 +3,12 @@
         <mavon-editor v-model="content.articleContent" @change="change" style="display: none" />
         <div class="markdown-body" v-html="html"></div>
          <el-backtop ></el-backtop>
+         <comment :articleId="content.articleId"></comment>
     </div>
 </template>
 
 <script>
+import comment from './blog-comment'
 export default {
     data() {
         return {
@@ -20,6 +22,9 @@ export default {
         change(e,render){
             this.html = render
         }
+    },
+    components:{
+        comment
     },
     mounted() {
         const articleId = this.$route.params.articleId;

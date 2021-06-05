@@ -19,20 +19,6 @@
         >
         <el-col :span="3" v-if="ifLogin">
             <div style="display: flex">
-                <!-- <el-menu mode="horizontal">
-                    <el-submenu index="1">
-                        <template slot="title"
-                            ><el-avatar
-                                :src="userImg"
-                                style="margin-right:10px"
-                            ></el-avatar>
-                            <span>{{userName}}</span>
-                        </template>
-                        <el-menu-item index="1-1">选项1</el-menu-item>
-                        <el-menu-item index="1-2">选项2</el-menu-item>
-                        <el-menu-item index="1-3">选项3</el-menu-item>
-                    </el-submenu>
-                </el-menu> -->
                 <el-avatar
                     :src="userImg"
                     style="margin-right: 10px; position: relative; top: 10px"
