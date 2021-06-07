@@ -1,7 +1,32 @@
 <template>
-    <div v-if="show">
-        {{ articleId }}
-        <el-form>
+    <div>
+        <ul class="comment-wrap">
+            <li class="comment-head">评论</li>
+            <li
+                v-for="comment in comments"
+                :key="comment.commentId"
+                class="comment-box"
+            >
+                <div style="font-size: 14px;">{{ comment.commentContent }}</div>
+                <el-row class="comment-info">
+                    <el-col :span="3"
+                        ><div>{{ comment.userName }}</div></el-col
+                    >
+                    <el-col :span="5"
+                        ><div>{{ comment.commentDate }}</div></el-col
+                    >
+                    <el-col :span="5"
+                        ><el-link
+                            icon="el-icon-star-on"
+                            :underline="false"
+                            @click="addLike(comment.commentId)"
+                            >{{ comment.commentLike }}</el-link
+                        >
+                    </el-col>
+                </el-row>
+            </li>
+        </ul>
+        <el-form v-if="show">
             <el-form-item label="发表评论" :model="form">
                 <el-input
                     type="textarea"
@@ -30,12 +55,13 @@ export default {
                 userId: "",
                 commentContent: "",
             },
+            comments: [],
         };
     },
     watch: {
         articleId(val) {
             this.form.articleId = val;
-            this.getComment()
+            this.getComment();
         },
     },
     methods: {
@@ -46,6 +72,7 @@ export default {
                 data: { ...this.form },
             })
                 .then((result) => {
+                    this.getComment();
                     this.$notify({
                         title: "评论成功",
                         message: this.$createElement(
@@ -59,7 +86,6 @@ export default {
                 .catch((err) => {});
         },
         getComment() {
-            console.log(this.form.articleId)
             this.$http({
                 method: "get",
                 url: "comment/findListByArticleId",
@@ -68,7 +94,20 @@ export default {
                 },
             })
                 .then((result) => {
-                    console.log(result)
+                    this.comments = result.data;
+                })
+                .catch((err) => {});
+        },
+        addLike(commentId) {
+            this.$http({
+                method: "get",
+                url: "comment/addLike",
+                params: {
+                    commentId,
+                },
+            })
+                .then((result) => {
+                    this.getComment();
                 })
                 .catch((err) => {});
         },
@@ -86,4 +125,20 @@ export default {
 </script>
 
 <style>
+.comment-wrap {
+    list-style: none;
+}
+.comment-head {
+    margin: 20px 0;
+    color: #606266;
+    font-size: 20px;
+}
+.comment-box {
+    border-bottom: 1px solid #f6f6f6;
+    margin-bottom: 10px;
+}
+.comment-info {
+    font-size: 12px;
+    margin-top: 5px;
+}
 </style>
