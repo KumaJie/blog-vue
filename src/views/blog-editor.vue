@@ -3,7 +3,11 @@
         <el-input placeholder="请输入标题" v-model="article.articleTitle">
             <template slot="prepend">文章标题</template>
         </el-input>
-        <mavon-editor @change="change" class="editor" />
+        <mavon-editor
+            @change="change"
+            class="editor"
+            v-model="article.articleContent"
+        />
         <el-button
             type="primary"
             round
@@ -19,7 +23,6 @@
 export default {
     data() {
         return {
-            html: "",
             load: false,
             article: {
                 userId: "",
@@ -34,8 +37,10 @@ export default {
             this.article.articleContent = value;
         },
         submit() {
-            console.log({ ...this.article });
-            const h = this.$createElement
+            if (this.$route.params.articleId) {
+                this.modify();
+                return;
+            }
             this.load = true;
             this.$http({
                 method: "post",
@@ -43,44 +48,78 @@ export default {
                 data: { ...this.article },
             })
                 .then((result) => {
-                    console.log(result);
-                    setTimeout(() => {
-                        this.load = false;
-                        this.$notify({
-                            title: "上传成功",
-                            message: h(
-                                "i",
-                                { style: "color: teal" },
-                                "您的博客已经成功上传"
-                            ),
-                        })
-                    }, 3000);
+                    this.load = false;
+                    this.$notify({
+                        title: "上传成功",
+                        message: this.$createElement(
+                            "i",
+                            { style: "color: teal" },
+                            "您的博客已经成功上传"
+                        ),
+                    })
+                    this.$router.push('/index/myblog/'+this.article.userId)
                 })
                 .catch((err) => {
-                    console.log(err);
-                    setTimeout(() => {
-                        this.load = false;
-                        this.$notify({
-                            title: "上传失败",
-                            message: h(
-                                "i",
-                                { style: "color: teal" },
-                                "上传失败"
-                            ),
-                        });
-                    }, 3000);
+                    this.load = false;
+                    this.$notify({
+                        title: "上传失败",
+                        message: h("i", { style: "color: teal" }, "上传失败"),
+                    })
+                });
+        },
+        modify() {
+            this.load = true;
+            this.$http({
+                method: "post",
+                url: "/article/modifyContent",
+                data: { ...this.article },
+            })
+                .then((result) => {
+                    this.load = false;
+                    this.$notify({
+                        title: "修改成功",
+                        message: this.$createElement(
+                            "i",
+                            { style: "color: teal" },
+                            "您的博客已经成功修改"
+                        ),
+                    });
+                    this.$router.push('/index/detail/'+this.article.articleId)
+                })
+                .catch((err) => {
+                    this.load = false;
+                    this.$notify({
+                        title: "上传失败",
+                        message: h("i", { style: "color: teal" }, "上传失败"),
+                    });
                 });
         },
     },
     mounted() {
         const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-        const h = this.$createElement;
         if (userInfo) {
             this.article.userId = userInfo.userId;
+            if (this.$route.params.articleId) {
+                // 请求内容
+                this.$http({
+                    method: "post",
+                    url: "article/findById",
+                    params: {
+                        articleId: this.$route.params.articleId,
+                    },
+                })
+                    .then((result) => {
+                        console.log(result);
+                        this.article = result.data;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
         } else {
             this.$notify({
                 title: "请先登录",
-                message: h(
+                message: this.$createElement(
                     "i",
                     { style: "color: teal" },
                     "登录后才可使用编辑器"

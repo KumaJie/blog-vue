@@ -11,14 +11,14 @@
                     ><el-avatar
                         :size="80"
                         shape="square"
-                        :src="require('../assets/img/avatar.png')"
+                        :src="blog.userImg"
                         :fit="'cover'"
                     ></el-avatar
                 ></el-col>
                 <el-col :span="22">{{ blog.articleContent }}</el-col>
             </el-row>
             <el-row class="blog-info">
-                <el-col :span="2">{{ blog.userId }}</el-col>
+                <el-col :span="2">{{ blog.userName }}</el-col>
                 <el-col :span="3">{{ blog.articleDate }}</el-col>
                 <el-col :span="1"
                     ><el-link icon="el-icon-star-on" :underline="false">{{
@@ -33,7 +33,8 @@
                         >{{ blog.commentSum }}</el-link
                     ></el-col
                 >
-                <el-col :span="1"
+
+                <el-col :span="10"
                     ><el-link
                         icon="el-icon-view"
                         :underline="false"
@@ -41,6 +42,24 @@
                         >{{ blog.articleView }}</el-link
                     ></el-col
                 >
+                <div v-if="homePage || ifRoot">
+                    <el-col :span="2" v-if="!ifRoot"
+                        ><el-link
+                            icon="el-icon-edit"
+                            :underline="false"
+                            :href="'/index/modify/' + blog.articleId"
+                            >修改博客</el-link
+                        ></el-col
+                    >
+                    <el-col :span="2"
+                        ><el-link
+                            icon="el-icon-close"
+                            :underline="false"
+                            @click="deleteBlog(blog.articleId)"
+                            >删除博客</el-link
+                        ></el-col
+                    >
+                </div>
             </el-row>
         </li>
     </ul>
@@ -51,10 +70,13 @@ export default {
     data() {
         return {
             blogs: [],
+            homePage: false,
+            ifRoot: false,
         };
     },
     methods: {
         getAllBlogs() {
+            this.homePage = false;
             this.$http({
                 method: "post",
                 url: "article/findListByView",
@@ -67,6 +89,7 @@ export default {
                 });
         },
         getBlogByUserId(id) {
+            this.homePage = true;
             this.$http({
                 method: "get",
                 url: "article/findListById",
@@ -75,25 +98,73 @@ export default {
                 },
             })
                 .then((result) => {
+                    console.log(result.data);
                     this.blogs = result.data;
                 })
                 .catch((err) => {
                     console.log(err);
                 });
         },
+        deleteBlog(articleId) {
+            this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning",
+            })
+                .then(() => {
+                    this.$http({
+                        method: "get",
+                        url: "article/deleteById",
+                        params: {
+                            articleId,
+                        },
+                    })
+                        .then((result) => {
+                            this.$message({
+                                type: "success",
+                                message: "删除成功!",
+                            });
+                            this.getBlogByUserId(this.$route.params.userId);
+                        })
+                        .catch((err) => {});
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "已取消删除",
+                    });
+                });
+        },
     },
     watch: {
         $route(to, from) {
-            console.log(to);
             if (to.params.userId) {
-                this.getBlogByUserId(to.params.userId);
+                const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+                if (userInfo.userPower === "0") {
+                    this.getAllBlogs();
+                    this.ifRoot = true;
+                } else {
+                    this.getBlogByUserId(to.params.userId);
+                    this.ifRoot = false;
+                }
             } else {
                 this.getAllBlogs();
             }
         },
     },
     mounted() {
-        this.getAllBlogs();
+        if (this.$route.params.userId) {
+            const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+            if (userInfo.userPower === "0") {
+                this.getAllBlogs();
+                this.ifRoot = true;
+            } else {
+                this.getBlogByUserId(this.$route.params.userId);
+                this.ifRoot = false;
+            }
+        } else {
+            this.getAllBlogs();
+        }
     },
 };
 </script>

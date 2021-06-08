@@ -6,6 +6,8 @@ import editor from '../views/blog-editor.vue'
 import detail from '../components/blog-detail.vue'
 import login from '../views/blog-login.vue'
 import register from '../views/blog-register.vue'
+import userInfo from '../views/blog-userInfo.vue'
+
 Vue.use(VueRouter)
 
 const routes = [{
@@ -26,7 +28,12 @@ const routes = [{
       {
         path: 'editor',
         component: editor
-      }, {
+      }, 
+      {
+        path: 'modify/:articleId',
+        component: editor
+      },
+      {
         path: 'detail/:articleId',
         component: detail
       }
@@ -39,6 +46,9 @@ const routes = [{
   {
     path: '/register',
     component: register
+  },{
+    path: '/userInfo',
+    component: userInfo
   }
 ]
 

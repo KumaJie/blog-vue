@@ -29,12 +29,17 @@
                         <i class="el-icon-arrow-down el-icon--right"></i
                     ></span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item icon="el-icon-user" command="info"
-                            >个人信息</el-dropdown-item
-                        >
-                        <el-dropdown-item icon="el-icon-reading" command="blog"
-                            >个人博客</el-dropdown-item
-                        >
+                        <el-dropdown-item icon="el-icon-user" command="blog" v-if="ifRoot">
+                            后台管理
+                        </el-dropdown-item>
+                        <div v-else>
+                            <el-dropdown-item icon="el-icon-user" command="info"
+                                >个人信息</el-dropdown-item
+                            >
+                            <el-dropdown-item icon="el-icon-reading" command="blog"
+                                >个人博客</el-dropdown-item
+                            >
+                        </div>
                         <el-dropdown-item
                             icon="el-icon-close"
                             command="loginOut"
@@ -54,6 +59,7 @@ export default {
             userId: '',
             userImg: '',
             userName: '',
+            ifRoot: false,
             ifLogin: false,
         };
     },
@@ -72,7 +78,7 @@ export default {
             }
         },
         showInfo() {
-
+             this.$router.push("/userInfo")
         },
         showBlog() {
             this.$router.push("/index/myblog/"+this.userId)
@@ -89,6 +95,9 @@ export default {
             this.userId = userInfo.userId
             this.userImg = userInfo.userImg;
             this.userName = userInfo.userName;
+            if(userInfo.userPower === '0'){
+                this.ifRoot = true
+            }
             this.ifLogin = true;
         }
     },
