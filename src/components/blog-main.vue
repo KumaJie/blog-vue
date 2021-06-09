@@ -78,7 +78,7 @@ export default {
         getAllBlogs() {
             this.homePage = false;
             this.$http({
-                method: "post",
+                method: "get",
                 url: "article/findListByView",
             })
                 .then((result) => {
@@ -88,13 +88,14 @@ export default {
                     console.log(err);
                 });
         },
-        getBlogByUserId(id) {
+        getBlogByUserId(userId) {
             this.homePage = true;
+            
             this.$http({
                 method: "get",
                 url: "article/findListById",
                 params: {
-                    id,
+                    userId,
                 },
             })
                 .then((result) => {

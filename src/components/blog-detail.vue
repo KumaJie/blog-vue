@@ -30,7 +30,7 @@ export default {
         const articleId = this.$route.params.articleId;
         // 请求内容
         this.$http({
-            method: "post",
+            method: "get",
             url: "article/findById",
             params: {
                 articleId,
