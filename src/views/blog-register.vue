@@ -126,16 +126,16 @@ export default {
         onSubmit() {
             this.$refs.registerForm.validate((valid) => {
                 if (valid) {
-                    const h = this.$createElement;
                     this.$http({
                         method: "post",
                         url: "user/regist",
                         data: { ...this.form },
                     })
                         .then((result) => {
+                            console.log(result)
                             this.$notify({
                                 title: "注册成功",
-                                message: h(
+                                message: this.$createElement(
                                     "i",
                                     { style: "color: teal" },
                                     "注册成功,即将返回首页"
@@ -147,8 +147,9 @@ export default {
                             }, 1000);
                         })
                         .catch((err) => {
+                            this.form = {}
                             this.$message({
-                                message: "服务器状态异常",
+                                message: "此ID已存在",
                                 type: "error",
                             });
                         });

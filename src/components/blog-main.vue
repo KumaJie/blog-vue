@@ -21,9 +21,12 @@
                 <el-col :span="2">{{ blog.userName }}</el-col>
                 <el-col :span="3">{{ blog.articleDate }}</el-col>
                 <el-col :span="1"
-                    ><el-link icon="el-icon-star-on" :underline="false">{{
-                        blog.articleLike
-                    }}</el-link></el-col
+                    ><el-link
+                        icon="el-icon-star-on"
+                        :underline="false"
+                        @click="addLike(blog.articleId)"
+                        >{{ blog.articleLike }}</el-link
+                    ></el-col
                 >
                 <el-col :span="1"
                     ><el-link
@@ -90,7 +93,7 @@ export default {
         },
         getBlogByUserId(userId) {
             this.homePage = true;
-            
+
             this.$http({
                 method: "get",
                 url: "article/findListById",
@@ -135,6 +138,18 @@ export default {
                         message: "已取消删除",
                     });
                 });
+        },
+        addLike(articleId) {
+            console.log(articleId);
+            this.$http({
+                method: "get",
+                url: "article/updateLike",
+                params: {
+                    articleId,
+                },
+            }).then((res) => {
+                this.getAllBlogs()
+            });
         },
     },
     watch: {
