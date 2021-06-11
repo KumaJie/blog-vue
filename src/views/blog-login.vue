@@ -79,7 +79,6 @@ export default {
         onSubmit() {
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
-                    const h = this.$createElement;
                     this.$http({
                         method: "post",
                         url: "user/login",
@@ -90,7 +89,7 @@ export default {
                             if (result.data == "") {
                                 this.$notify({
                                     title: "登录失败",
-                                    message: h(
+                                    message: this.$createElement(
                                         "i",
                                         { style: "color: teal" },
                                         "检查账户或密码"
@@ -100,7 +99,7 @@ export default {
                             } else {
                                 this.$notify({
                                     title: "登录成功",
-                                    message: h(
+                                    message: this.$createElement(
                                         "i",
                                         { style: "color: teal" },
                                         "注册成功,即将返回首页"

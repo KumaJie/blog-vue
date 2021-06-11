@@ -93,7 +93,6 @@ export default {
         },
         getBlogByUserId(userId) {
             this.homePage = true;
-
             this.$http({
                 method: "get",
                 url: "article/findListById",
@@ -102,7 +101,21 @@ export default {
                 },
             })
                 .then((result) => {
-                    console.log(result.data);
+                    this.blogs = result.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        getBlogByTitle(articleTitle) {
+            this.$http({
+                method: "get",
+                url: "article/findListByTitle",
+                params: {
+                    articleTitle,
+                },
+            })
+                .then((result) => {
                     this.blogs = result.data;
                 })
                 .catch((err) => {
@@ -148,7 +161,7 @@ export default {
                     articleId,
                 },
             }).then((res) => {
-                this.getAllBlogs()
+                this.getAllBlogs();
             });
         },
     },
@@ -167,6 +180,14 @@ export default {
                 this.getAllBlogs();
             }
         },
+        $searchTitle(to, from) {
+            alert(to);
+        },
+    },
+    created() {
+        this.$bus.$on("search", (searchTitle) => {
+            this.getBlogByTitle(searchTitle);
+        });
     },
     mounted() {
         if (this.$route.params.userId) {
@@ -191,6 +212,7 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 0px 30px;
+    margin: 0px 100px;
 }
 .main-ul li {
     border-bottom: 1px solid #f6f6f6;
@@ -202,6 +224,8 @@ export default {
 }
 .blog-description {
     font-size: 14px;
+    height: 85.6px;
+    overflow: hidden;
 }
 .blog-info {
     font-size: 12px;

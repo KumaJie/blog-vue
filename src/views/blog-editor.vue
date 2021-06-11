@@ -5,8 +5,10 @@
         </el-input>
         <mavon-editor
             @change="change"
+            @imgAdd="addImg"
             class="editor"
             v-model="article.articleContent"
+            ref="md"
         />
         <el-button
             type="primary"
@@ -56,15 +58,15 @@ export default {
                             { style: "color: teal" },
                             "您的博客已经成功上传"
                         ),
-                    })
-                    this.$router.push('/index/myblog/'+this.article.userId)
+                    });
+                    this.$router.push("/index/myblog/" + this.article.userId);
                 })
                 .catch((err) => {
                     this.load = false;
                     this.$notify({
                         title: "上传失败",
                         message: h("i", { style: "color: teal" }, "上传失败"),
-                    })
+                    });
                 });
         },
         modify() {
@@ -84,13 +86,42 @@ export default {
                             "您的博客已经成功修改"
                         ),
                     });
-                    this.$router.push('/index/detail/'+this.article.articleId)
+                    this.$router.push(
+                        "/index/detail/" + this.article.articleId
+                    );
                 })
                 .catch((err) => {
                     this.load = false;
                     this.$notify({
                         title: "上传失败",
-                        message: h("i", { style: "color: teal" }, "上传失败"),
+                        message: this.$createElement(
+                            "i",
+                            { style: "color: teal" },
+                            "上传失败"
+                        ),
+                    });
+                });
+        },
+        addImg(filename, imgFile) {
+            let img = new FormData();
+            img.append("img", imgFile);
+            this.$http({
+                method: "post",
+                url: "article/upLoadImg",
+                data: img,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then((res) => {
+                    this.$refs.md.$img2Url(filename, res.data);
+                })
+                .catch((err) => {
+                    this.$notify({
+                        title: "图片上传失败",
+                        message: this.$createElement(
+                            "i",
+                            { style: "color: teal" },
+                            "图片上传失败"
+                        ),
                     });
                 });
         },

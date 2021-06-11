@@ -10,6 +10,7 @@ import 'mavon-editor/dist/css/index.css'
 import './assets/css/global.css'
 axios.defaults.baseURL = 'http://localhost:8085'
 Vue.prototype.$http = axios
+Vue.prototype.$bus = new Vue()
 
 Vue.use(ElementUI)
 Vue.use(mavonEditor)

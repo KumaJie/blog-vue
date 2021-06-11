@@ -3,10 +3,20 @@
         <el-col :span="10">
             <div class="icon">Easy Blog</div>
         </el-col>
-        <el-col :span="9" class="title"
-            ><el-link href="/index" :underline="false">主页</el-link></el-col
-        >
-        <el-col :span="2" class="title"
+        <el-col :span="4" class="title"
+            ><el-link href="/index" :underline="false">主页</el-link>
+        </el-col>
+        <el-col :span="4" class="title">
+            <el-input v-model="searchTitle">
+                <i
+                    slot="suffix"
+                    class="el-input__icon el-icon-search"
+                    style="cursor: pointer"
+                    @click="search"
+                ></i>
+            </el-input>
+        </el-col>
+        <el-col :span="2" :offset="1" class="title"
             ><el-link href="/index/editor" :underline="false"
                 >发布新文章</el-link
             ></el-col
@@ -29,14 +39,20 @@
                         <i class="el-icon-arrow-down el-icon--right"></i
                     ></span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item icon="el-icon-user" command="blog" v-if="ifRoot">
+                        <el-dropdown-item
+                            icon="el-icon-user"
+                            command="blog"
+                            v-if="ifRoot"
+                        >
                             后台管理
                         </el-dropdown-item>
                         <div v-else>
                             <el-dropdown-item icon="el-icon-user" command="info"
                                 >个人信息</el-dropdown-item
                             >
-                            <el-dropdown-item icon="el-icon-reading" command="blog"
+                            <el-dropdown-item
+                                icon="el-icon-reading"
+                                command="blog"
                                 >个人博客</el-dropdown-item
                             >
                         </div>
@@ -56,9 +72,10 @@
 export default {
     data() {
         return {
-            userId: '',
-            userImg: '',
-            userName: '',
+            userId: "",
+            userImg: "",
+            userName: "",
+            searchTitle: "",
             ifRoot: false,
             ifLogin: false,
         };
@@ -67,36 +84,48 @@ export default {
         command(com) {
             switch (com) {
                 case "info":
-                    this.showInfo()
-                    break
+                    this.showInfo();
+                    break;
                 case "blog":
-                    this.showBlog()
+                    this.showBlog();
                     break;
                 case "loginOut":
-                    this.loginOut()
+                    this.loginOut();
                     break;
             }
         },
         showInfo() {
-             this.$router.push("/userInfo")
+            this.$router.push("/userInfo");
         },
         showBlog() {
-            this.$router.push("/index/myblog/"+this.userId)
+            this.$router.push("/index/myblog/" + this.userId);
         },
         loginOut() {
-            sessionStorage.removeItem('userInfo')
-            this.ifLogin = false
-            this.$router.replace('/')
+            sessionStorage.removeItem("userInfo");
+            this.ifLogin = false;
+            this.$router.replace("/");
+            this.$notify({
+                title: "退出成功",
+                message: this.$createElement(
+                    "i",
+                    { style: "color: teal" },
+                    "退出成功,即将返回首页"
+                ),
+                duration: 1000,
+            });
         },
+        search(){
+            this.$bus.$emit("search", this.searchTitle) 
+        }
     },
     mounted() {
-        const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+        const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
         if (userInfo) {
-            this.userId = userInfo.userId
+            this.userId = userInfo.userId;
             this.userImg = userInfo.userImg;
             this.userName = userInfo.userName;
-            if(userInfo.userPower === '0'){
-                this.ifRoot = true
+            if (userInfo.userPower === "0") {
+                this.ifRoot = true;
             }
             this.ifLogin = true;
         }

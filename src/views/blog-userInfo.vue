@@ -11,13 +11,13 @@
                     class="user-avater"
                     :src="userInfo.userImg"
                 ></el-image>
-                <div class="name">{{ userInfo.userName }}</div>
+                <div class="name">欢迎用户{{ userInfo.userName }}</div>
             </el-col>
 
-            <el-col :span="8" :offset="8">
+            <el-col :span="8" :offset="8" style="margin-top:25px">
                 <el-tabs tab-position="left" value="first">
                     <el-tab-pane label="个人信息" name="first">
-                        <span>欢迎用户{{ userInfo.userName }}</span>
+                        <!-- <span>欢迎用户{{ userInfo.userName }}</span> -->
                         <el-form label-position="left">
                             <el-form-item label="修改头像"
                                 ><el-upload
@@ -195,6 +195,8 @@ export default {
 .name {
     margin-top: 10px;
     font-size: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f6f6f6;
 }
 .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
