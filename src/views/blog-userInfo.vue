@@ -14,7 +14,7 @@
                 <div class="name">欢迎用户{{ userInfo.userName }}</div>
             </el-col>
 
-            <el-col :span="8" :offset="8" style="margin-top:25px">
+            <el-col :span="8" :offset="8" style="margin-top: 25px">
                 <el-tabs tab-position="left" value="first">
                     <el-tab-pane label="个人信息" name="first">
                         <!-- <span>欢迎用户{{ userInfo.userName }}</span> -->
@@ -26,6 +26,7 @@
                                     :data="userInfo"
                                     :show-file-list="false"
                                     :on-success="changeImg"
+                                    :on-error="changeErr"
                                 >
                                     <img
                                         :src="userInfo.userImg"
@@ -33,7 +34,9 @@
                                     /> </el-upload
                             ></el-form-item>
                             <el-form-item label="用户昵称">
-                                <el-input v-model="userInfo.userName"></el-input>
+                                <el-input
+                                    v-model="userInfo.userName"
+                                ></el-input>
                             </el-form-item>
                         </el-form>
                     </el-tab-pane>
@@ -175,10 +178,20 @@ export default {
                 }
             });
         },
-        changeImg(response){
-            this.userInfo.userImg = response
-            sessionStorage.setItem('userInfo',JSON.stringify(this.userInfo))
-        }
+        changeImg(response) {
+            this.$message({
+                message: "修改成功",
+                type: "success",
+            });
+            this.userInfo.userImg = response;
+            sessionStorage.setItem("userInfo", JSON.stringify(this.userInfo));
+        },
+        changeErr() {
+            this.$message({
+                message: "上传失败",
+                type: "error",
+            });
+        },
     },
     mounted() {
         this.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));

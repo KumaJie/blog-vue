@@ -138,12 +138,12 @@ export default {
                                 message: this.$createElement(
                                     "i",
                                     { style: "color: teal" },
-                                    "注册成功,即将返回首页"
+                                    "注册成功,即将前往登录界面"
                                 ),
                                 duration: 1000
                             });
                             setTimeout(() => {
-                                this.backIndex();
+                               this.$router.replace("/login");
                             }, 1000);
                         })
                         .catch((err) => {

@@ -78,7 +78,7 @@ export default {
         },
         onSubmit() {
             this.$refs.loginForm.validate((valid) => {
-                if (valid) {
+                if (valid) { 
                     this.$http({
                         method: "post",
                         url: "user/login",
@@ -102,7 +102,7 @@ export default {
                                     message: this.$createElement(
                                         "i",
                                         { style: "color: teal" },
-                                        "注册成功,即将返回首页"
+                                        "注册成功,即将进入个人主页"
                                     ),
                                     duration: 1000,
                                 });
@@ -111,7 +111,7 @@ export default {
                                     JSON.stringify(result.data)
                                 );
                                 setTimeout(() => {
-                                    this.backIndex();
+                                     this.$router.replace("/index/myblog/" + this.form.userId);
                                 }, 1000);
                             }
                         })
